@@ -47,9 +47,7 @@ server.listen(port, () => {
 
 // ENDPOINTS
 
-//   GET   http://localhost:3000   /api/pets
-
-server.get('/api/projects', async (req, res) => {
+server.get('/projects/list', async (req, res) => {
 
   // Connectar con la base de datos
 
@@ -62,7 +60,7 @@ server.get('/api/projects', async (req, res) => {
   `;
 
   const [results] = await conn.query(queryGetProjects);
- 
+
   // Recuperar los datos
   
   console.log(results);
