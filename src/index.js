@@ -11,6 +11,7 @@ const port = 3000;
 // CONFIGURACIÓN
 server.use(cors());
 server.use(express.json({ limit: '25mb' }));
+server.set('view engine', 'ejs');
 
 // CONFIGURACIÓN DE MYSQL
 async function getConnection() {
@@ -59,17 +60,57 @@ server.get('/projects/list', async (req, res) => {
 });
 
 // Crear proyectos
-server.post('/api/projectCard', (req, res) => {
-
-  // Datos vienen req.body
+server.post('/api/projectCard', async (req, res) => {
 
   // 1. Conectar a la bbdd
-  // 2. Insertar los datos de la autora  Authors
+    const conn = await getConnection();
+
+  // 2. Insertar los datos de la autora Authors
+    const insertAuthor = `
+    INSERT authors (name, job, photo)
+      VALUES (?, ?, ?)`;
+
+    const [resultsInsertAuthor] = await conn.execute(
+      insertAuthor,
+        [req.body.name, req.body.job, req.body.photo]);
+
   // 3. Recupero el id de Authors
+
+  const fkAuthor = resultsInsertAuthor.insertId;
+
   // 4. Insertar el proyecto Projects(fkAuthors)
+    const insertProject = `
+    INSERT projects (name, slogan, repo, demo, technologies, description, image, fkAuthor)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+    
+      const [resultsInsertProject] = await conn.execute(
+        insertProject,
+        [req.body.name, req.body.slogan, req.body.repo, req.body.demo, req.body.technologies, req.body.description, req.body.image, fkAuthor]
+      );
+
   // 5. Recupero el id de Projects
+  const idProject = resultsInsertProject.insertId;
+
   // 6. Cierro al conexion
+  conn.end();
+
   // 7. Devuelvo el json
+
+  if(resultsInsertProject.affectedRows === 1) {
+    res.json({
+      success: true,
+      cardURL: `http://localhost:${port}/projectCard/${idProject}`
+    })
+    
+  }
+  //else {
+    //res.json({
+      //success: false,
+      //error: 'Ha ocurrido un error al crear el proyecto'
+    //})
+  //};
+
+  console.log (res);
 
 });
 
