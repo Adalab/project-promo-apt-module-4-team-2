@@ -1,77 +1,87 @@
-// Nuestro servidor Express
-
 // IMPORTAR BIBLIOTECAS
-
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
+require('dotenv').config();
 
 // CREAR VARIABLES
-
 const server = express();
-const port = 3000;        // 1025 - 65365
-
-// http://   localhost : 3000  / path ...
+const port = 3000;
 
 // CONFIGURACIÓN
-
-server.use( cors() );
+server.use(cors());
 server.use(express.json({ limit: '25mb' }));
 
 // CONFIGURACIÓN DE MYSQL
-
 async function getConnection() {
+  const connection = await mysql.createConnection({
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASS,
+    database: process.env.MYSQL_DDBB
+  });
 
-const connection = await mysql.createConnection({
-    host: 'sql.freedb.tech',
-    user: 'freedb_Team-2',
-    password: '3HjXNYZ5BV&bmpp',
-    database: 'freedb_Proyectos Molones'
-});
+  await connection.connect();
 
-await connection.connect();
-
-console.log(
+  console.log(
     `Conexión establecida con la base de datos (identificador=${connection.threadId})`
-);
+  );
 
   return connection;
 }
 
-
 // ARRANCAR EL SERVIDOR
-
 server.listen(port, () => {
   console.log(`Servidor iniciado escuchando en http://localhost:${port}`);
 });
 
+// SERVIDOR ESTÁTICOS
+server.use(express.static('./public'));
+
 // ENDPOINTS
 
+// API listar proyectos
 server.get('/projects/list', async (req, res) => {
 
-  // Connectar con la base de datos
-
+  // 1. Conectar a la bbdd
   const conn = await getConnection();
 
-  // Lanzar un SELECT
-
-  const queryGetProjects = `
-    SELECT * FROM projects;
-  `;
+  // 2. Lanzar un SELECT para recuperar todos los proy de la bbdd
+  const queryGetProjects = `SELECT * FROM projects;`;
 
   const [results] = await conn.query(queryGetProjects);
 
-  // Recuperar los datos
-  
-  console.log(results);
-
-  // Cerramos la conexion
-
+  // 3. Cierro la conexión
   conn.close();
 
-  res.json({info:"nada", results: results});
+  // 4. Devuelvo un json con los resultados.
+  res.json({ info: "Lista de proyectos", results: results });
 });
 
-// SERVIDOR ESTÁTICOS
+// Crear proyectos
+server.post('/api/projectCard', (req, res) => {
 
-server.use( express.static('./public') );
+  // Datos vienen req.body
+
+  // 1. Conectar a la bbdd
+  // 2. Insertar los datos de la autora  Authors
+  // 3. Recupero el id de Authors
+  // 4. Insertar el proyecto Projects(fkAuthors)
+  // 5. Recupero el id de Projects
+  // 6. Cierro al conexion
+  // 7. Devuelvo el json
+
+});
+
+// Mostrar el detalle de un proyecto (serv. dinámicos)
+server.get('/projectCard/:id', (req, res) => {
+
+  // Recibo el id del proyecto en un URL param
+
+  // 1. Conectar a la bbdd
+  // 2. Lanzar un SELECT para recuperar 1 proyecto con el id <- req.params
+  // 3. Hago un template (EJS)
+  // 4. Cierro la conexión
+  // 5. res.render('plantilla', resultado)
+
+});
