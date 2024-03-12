@@ -2,7 +2,9 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
+
 require('dotenv').config();
+
 
 // CREAR VARIABLES
 const server = express();
@@ -116,6 +118,58 @@ server.post('/api/projectCard', async (req, res) => {
 
 // Mostrar el detalle de un proyecto (serv. dinámicos)
 server.get('/projectCard/:id', (req, res) => {
+
+  // Recibo el id del proyecto en un URL param
+
+  // 1. Conectar a la bbdd
+  // 2. Lanzar un SELECT para recuperar 1 proyecto con el id <- req.params
+  // 3. Hago un template (EJS)
+  // 4. Cierro la conexión
+  // 5. res.render('plantilla', resultado)
+
+});
+
+//definir EndPoint
+
+// Crear proyectos
+app.post('/api/projectCard', async (req, res) => {
+
+  // Datos vienen req.body
+
+  // 1. Conectar a la bbdd
+
+  const conn = await getConnection();
+
+  // 2. Insertar los datos de la autora  Authors
+ const insertAuthor = `
+  INSERT authors (autor, job, image)
+    VALUES (?, ?, ?)`
+
+const [resultsInsertAuthor] = await conn.execute(insertAuthor, [req.body.autor, req.body.job, req.body.image]); 
+
+  // 3. Recupero el id de Authors
+  // 4. Insertar el proyecto Projects(fkAuthors)
+  // 5. Recupero el id de Projects
+  // 6. Cierro al conexion
+  // 7. Devuelvo el json
+
+});
+
+
+// API listar proyectos
+app.get('/api/proyectCard', (req, res) => {
+
+  // 1. Conectar a la bbdd
+  // 2. Lanzar un SELECT para recuperar todos los proy de la bbdd
+  // 3. Cierro la conexión
+  // 4. Devuelvo un json con los resultados.
+
+});
+
+
+
+// Mostrar el detalle de un proyecto (serv. dinámicos)
+app.get('/projectCard/:id', (req, res) => {
 
   // Recibo el id del proyecto en un URL param
 
