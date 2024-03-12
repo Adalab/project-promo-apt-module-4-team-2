@@ -148,10 +148,34 @@ app.post('/api/projectCard', async (req, res) => {
 const [resultsInsertAuthor] = await conn.execute(insertAuthor, [req.body.autor, req.body.job, req.body.image]); 
 
   // 3. Recupero el id de Authors
+
+  const fkAuthor = resultsInsertAuthor.insertId;
+
   // 4. Insertar el proyecto Projects(fkAuthors)
+  
+  const insertProject = `
+  INSERT projects (name, slogan, repo, demo, technologies, \`desc\`, photo, fkAutor) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+
+    const [resultsInsertProject] = await conn.execute(
+      insertProject,
+      [req.body.name, req.body.sloga, req.body.repo, req.body.demo, req.body.technologies, req.body.desc, req.body.photo, fkAuthor]
+    )
+
+
   // 5. Recupero el id de Projects
+
+const idProject = resultsInsertProject.insertId
+
   // 6. Cierro al conexion
+
+  conn.end();
+
   // 7. Devuelvo el json
+res.json({ 
+  success: true,
+  cardURL: `https://localhost:${port}/projectCard/${idProject}`
+});
 
 });
 
@@ -178,5 +202,8 @@ app.get('/projectCard/:id', (req, res) => {
   // 3. Hago un template (EJS)
   // 4. Cierro la conexión
   // 5. res.render('plantilla', resultado)
+const data = {};
+
+res.render('details', data)
 
 });
