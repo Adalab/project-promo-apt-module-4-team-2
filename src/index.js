@@ -184,8 +184,15 @@ res.json({
 app.get('/api/proyectCard', (req, res) => {
 
   // 1. Conectar a la bbdd
+
+  
   // 2. Lanzar un SELECT para recuperar todos los proy de la bbdd
+  
+  
+
   // 3. Cierro la conexión
+
+  
   // 4. Devuelvo un json con los resultados.
 
 });
@@ -193,16 +200,26 @@ app.get('/api/proyectCard', (req, res) => {
 
 
 // Mostrar el detalle de un proyecto (serv. dinámicos)
-app.get('/projectCard/:id', (req, res) => {
+app.get('/projectCard/:id', async (req, res) => {
 
   // Recibo el id del proyecto en un URL param
 
   // 1. Conectar a la bbdd
+  const conn = await getConnection()
   // 2. Lanzar un SELECT para recuperar 1 proyecto con el id <- req.params
+  const selectProjects = `
+  SELECT *
+    FROM authors a 
+      JOIN projects p ON (a.idAuthor= p.fkAuthor)
+    WHERE p.idProject = ?;`
+    ;
+
+  const [results] = await conn.query(selectProjects, [req.params.id]);
   // 3. Hago un template (EJS)
   // 4. Cierro la conexión
+  conn.end();
   // 5. res.render('plantilla', resultado)
-const data = {};
+const data = results [0];
 
 res.render('details', data)
 
