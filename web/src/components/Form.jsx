@@ -2,8 +2,8 @@ import "../scss/Form.scss";
 
 import PropTypes from "prop-types";
 
-import GetAvatar from "../components/GetAvatar";
-import ButtonSave from "../components/ButtonSave";
+import GetAvatar from "./GetAvatar";
+import ButtonSave from "./ButtonSave";
 
 function Form({
   changeData,

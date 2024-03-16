@@ -32,6 +32,19 @@ function App() {
   const [fetchResponse, setFetchResponse] = useState();
 
   useEffect(() => {
+    const fetchProjects = async () => {
+      const response = await fetch("/projects/list");
+      const data = await response.json();
+
+      console.log(data);
+
+      setData(data.results);
+    };
+
+    fetchProjects();
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem("savedData", JSON.stringify(savedData));
   }, [savedData]);
 
@@ -76,6 +89,8 @@ function App() {
       });
   };
 
+
+
   return (
     <div>
       <Header />
@@ -95,7 +110,7 @@ function App() {
               />
             }
           />
-          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects" element={<ProjectsPage data={data} />} />
           <Route path="/detail" element={<DetailPage />} />
         </Routes>
       </main>
