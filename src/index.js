@@ -9,7 +9,7 @@ require('dotenv').config();
 
 // CREAR VARIABLES
 const server = express();
-const port = 3000;
+const port = 10000;
 const host = '0.0.0.0'
 
 // CONFIGURACIÓN
