@@ -110,8 +110,9 @@ server.post('/api/projectCard', async (req, res) => {
   //})
   //};
 
-  console.log(res);
 });
+
+
 
 server.get('/healthcheck', (req, res) => {
   return res.json({ message: 'OK' });
