@@ -115,70 +115,6 @@ server.post('/api/projectCard', async (req, res) => {
 
 });
 
-// Mostrar el detalle de un proyecto (serv. dinámicos)
-server.get('/projectCard/:id', (req, res) => {
-
-  // Recibo el id del proyecto en un URL param
-
-  // 1. Conectar a la bbdd
-  // 2. Lanzar un SELECT para recuperar 1 proyecto con el id <- req.params
-  // 3. Hago un template (EJS)
-  // 4. Cierro la conexión
-  // 5. res.render('plantilla', resultado)
-
-});
-
-//definir EndPoint
-
-// // Crear proyectos
-// app.post('/api/projectCard', async (req, res) => {
-
-//   // Datos vienen req.body
-
-//   // 1. Conectar a la bbdd
-
-//   const conn = await getConnection();
-
-//   // 2. Insertar los datos de la autora  Authors
-//  const insertAuthor = `
-//   INSERT authors (autor, job, image)
-//     VALUES (?, ?, ?)`
-
-// const [resultsInsertAuthor] = await conn.execute(insertAuthor, [req.body.autor, req.body.job, req.body.image]); 
-
-//   // 3. Recupero el id de Authors
-
-//   const fkAuthor = resultsInsertAuthor.insertId;
-
-//   // 4. Insertar el proyecto Projects(fkAuthors)
-  
-//   const insertProject = `
-//   INSERT projects (name, slogan, repo, demo, technologies, \`desc\`, photo, fkAutor) 
-//     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-
-//     const [resultsInsertProject] = await conn.execute(
-//       insertProject,
-//       [req.body.name, req.body.sloga, req.body.repo, req.body.demo, req.body.technologies, req.body.desc, req.body.photo, fkAuthor]
-//     )
-
-
-//   // 5. Recupero el id de Projects
-
-// const idProject = resultsInsertProject.insertId
-
-//   // 6. Cierro al conexion
-
-//   conn.end();
-
-//   // 7. Devuelvo el json
-// res.json({ 
-//   success: true,
-//   cardURL: `https://localhost:${port}/projectCard/${idProject}`
-// });
-
-// });
-
-
 
 // Mostrar el detalle de un proyecto (serv. dinámicos)
 server.get('/projectCard/:id', async (req, res) => {
@@ -197,6 +133,8 @@ server.get('/projectCard/:id', async (req, res) => {
 
   const [results] = await conn.query(selectProjects, [req.params.id]);
   // 3. Hago un template (EJS)
+
+  
   // 4. Cierro la conexión
   conn.end();
   // 5. res.render('plantilla', resultado)
