@@ -73,7 +73,7 @@ server.post('/api/projectCard', async (req, res) => {
 
   const [resultsInsertAuthor] = await conn.execute(
     insertAuthor,
-    [req.body.author, req.body.job, req.body.photo]);
+    [req.body.autor, req.body.job, req.body.photo]);
 
   // 3. Recupero el id de Authors
 
@@ -86,7 +86,7 @@ server.post('/api/projectCard', async (req, res) => {
 
   const [resultsInsertProject] = await conn.execute(
     insertProject,
-    [req.body.name, req.body.slogan, req.body.repo, req.body.demo, req.body.technologies, req.body.description, req.body.image, fkAuthor]
+    [req.body.name, req.body.slogan, req.body.repo, req.body.demo, req.body.technologies, req.body.desc, req.body.image, fkAuthor]
   );
 
   // 5. Recupero el id de Projects
@@ -111,8 +111,6 @@ server.post('/api/projectCard', async (req, res) => {
   //})
   //};
 
-  console.log (res);
-
 });
 
 // Mostrar el detalle de un proyecto (serv. dinámicos)
@@ -130,7 +128,7 @@ server.get('/projectCard/:id', (req, res) => {
 
 server.get('/healthcheck', (req, res) => {
 
-  return res.json({message: "OK"})
+  return res.json({ message: "OK" })
 
 });
 
@@ -157,7 +155,7 @@ server.get('/healthcheck', (req, res) => {
 //   const fkAuthor = resultsInsertAuthor.insertId;
 
 //   // 4. Insertar el proyecto Projects(fkAuthors)
-  
+
 //   const insertProject = `
 //   INSERT projects (name, slogan, repo, demo, technologies, \`desc\`, photo, fkAutor) 
 //     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
