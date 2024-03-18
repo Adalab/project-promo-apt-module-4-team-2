@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
     "dev": "npx nodemon src/index.js",
-    "deploy": "rm -rf public ; cd web && npm run build && cd .. && mv web/dist public"
+    "deploy": "rm -rf public ; cd web && npm run build && cd .. && mv web/dist public",
+    "publish-react": "cd web && npm run build && cd.. && rm -rf public-react ; mv web/dist public-react"
   },
   "author": "",
   "license": "ISC",

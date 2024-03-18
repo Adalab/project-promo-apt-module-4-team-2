@@ -206,3 +206,7 @@ const data = results [0];
 res.render('details', data)
 
 });
+
+//DEFINIR SERVIDORES ESTÁTICOS
+const staticServerPathWeb='../public-react';
+application.use(express.static(path.join(__dirname, staticServerPathWeb)));
