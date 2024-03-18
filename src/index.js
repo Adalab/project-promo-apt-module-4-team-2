@@ -64,30 +64,30 @@ server.get('/projects/list', async (req, res) => {
 server.post('/api/projectCard', async (req, res) => {
 
   // 1. Conectar a la bbdd
-    const conn = await getConnection();
+  const conn = await getConnection();
 
   // 2. Insertar los datos de la autora Authors
-    const insertAuthor = `
-    INSERT authors (name, job, photo)
+  const insertAuthor = `
+    INSERT authors (author, job, photo)
       VALUES (?, ?, ?)`;
 
-    const [resultsInsertAuthor] = await conn.execute(
-      insertAuthor,
-        [req.body.name, req.body.job, req.body.photo]);
+  const [resultsInsertAuthor] = await conn.execute(
+    insertAuthor,
+    [req.body.author, req.body.job, req.body.photo]);
 
   // 3. Recupero el id de Authors
 
   const fkAuthor = resultsInsertAuthor.insertId;
 
   // 4. Insertar el proyecto Projects(fkAuthors)
-    const insertProject = `
+  const insertProject = `
     INSERT projects (name, slogan, repo, demo, technologies, description, image, fkAuthor)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
-    
-      const [resultsInsertProject] = await conn.execute(
-        insertProject,
-        [req.body.name, req.body.slogan, req.body.repo, req.body.demo, req.body.technologies, req.body.description, req.body.image, fkAuthor]
-      );
+
+  const [resultsInsertProject] = await conn.execute(
+    insertProject,
+    [req.body.name, req.body.slogan, req.body.repo, req.body.demo, req.body.technologies, req.body.description, req.body.image, fkAuthor]
+  );
 
   // 5. Recupero el id de Projects
   const idProject = resultsInsertProject.insertId;
@@ -97,18 +97,18 @@ server.post('/api/projectCard', async (req, res) => {
 
   // 7. Devuelvo el json
 
-  if(resultsInsertProject.affectedRows === 1) {
+  if (resultsInsertProject.affectedRows === 1) {
     res.json({
       success: true,
       cardURL: `http://localhost:${port}/projectCard/${idProject}`
     })
-    
+
   }
   //else {
-    //res.json({
-      //success: false,
-      //error: 'Ha ocurrido un error al crear el proyecto'
-    //})
+  //res.json({
+  //success: false,
+  //error: 'Ha ocurrido un error al crear el proyecto'
+  //})
   //};
 
   console.log (res);
@@ -202,16 +202,17 @@ server.get('/projectCard/:id', async (req, res) => {
     ;
 
   const [results] = await conn.query(selectProjects, [req.params.id]);
+
   // 3. Hago un template (EJS)
   // 4. Cierro la conexión
   conn.end();
   // 5. res.render('plantilla', resultado)
-const data = results [0];
+  const data = results[0];
 
-res.render('details', data)
+  res.render('details', data)
 
 });
 
 //DEFINIR SERVIDORES ESTÁTICOS
-const staticServerPathWeb='../public-react';
+const staticServerPathWeb = '../public-react';
 server.use(express.static(path.join(__dirname, staticServerPathWeb)));
