@@ -4,7 +4,7 @@ import Card from "../Card";
 
 import "../../scss/ProjectPage.scss";
 
-function ProjectPage({ data, projectsList }) {
+function ProjectPage({ projectsList }) {
   return (
     <>
       <section className="hero">

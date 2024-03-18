@@ -47,7 +47,7 @@ server.get("/projects/list", async (req, res) => {
   const conn = await getConnection();
 
   // 2. Lanzar un SELECT para recuperar todos los proy de la bbdd
-  const queryGetProjects = `SELECT * FROM projects;`;
+  const queryGetProjects = `SELECT * FROM projects JOIN authors ON fkAuthor = idAuthor;`;
 
   const [results] = await conn.query(queryGetProjects);
 

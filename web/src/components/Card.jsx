@@ -16,7 +16,7 @@ function Card({ data }) {
           style={{ backgroundImage: `url(${data.photo || defaultPhoto})` }}
         ></div>
         <p className="card__job">{data.job || "Full stack Developer"}</p>
-        <h3 className="card__name">{data.autor || "Emmelie Bjôrklund"}</h3>
+        <h3 className="card__name">{data.author || "Emmelie Bjôrklund"}</h3>
       </div>
 
       <div className="card__project">
@@ -24,7 +24,7 @@ function Card({ data }) {
         <p className="card__slogan">{data.slogan || "Diseños Exclusivos"}</p>
         <h3 className="card__descriptionTitle">Product description</h3>
         <p className="card__description">
-          {data.desc ||
+          {data.description ||
             "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla, quos? Itaque, molestias eveniet laudantium adipisci vitae ratione"}
         </p>
 

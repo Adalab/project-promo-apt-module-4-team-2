@@ -109,7 +109,7 @@ function App() {
           />
           <Route
             path="/projects"
-            element={<ProjectsPage data={data} projectsList={projectsList} />}
+            element={<ProjectsPage projectsList={projectsList} />}
           />
           <Route path="/detail" element={<DetailPage />} />
         </Routes>
