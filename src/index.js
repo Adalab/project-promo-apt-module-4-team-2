@@ -1,21 +1,20 @@
 // IMPORTAR BIBLIOTECAS
-const express = require('express');
-const cors = require('cors');
-const mysql = require('mysql2/promise');
-const path = require('path');
+const express = require("express");
+const cors = require("cors");
+const mysql = require("mysql2/promise");
+const path = require("path");
 
-require('dotenv').config();
-
+require("dotenv").config();
 
 // CREAR VARIABLES
 const server = express();
 const port = 10000;
-const host = '0.0.0.0';
+const host = "0.0.0.0";
 
 // CONFIGURACIÓN
 server.use(cors());
-server.use(express.json({ limit: '25mb' }));
-server.set('view engine', 'ejs');
+server.use(express.json({ limit: "25mb" }));
+server.set("view engine", "ejs");
 
 // CONFIGURACIÓN DE MYSQL
 async function getConnection() {
@@ -43,8 +42,7 @@ server.listen(port, host, () => {
 // ENDPOINTS
 
 // API listar proyectos
-server.get('/projects/list', async (req, res) => {
-
+server.get("/projects/list", async (req, res) => {
   // 1. Conectar a la bbdd
   const conn = await getConnection();
 
@@ -61,8 +59,7 @@ server.get('/projects/list', async (req, res) => {
 });
 
 // Crear proyectos
-server.post('/api/projectCard', async (req, res) => {
-
+server.post("/api/projectCard", async (req, res) => {
   // 1. Conectar a la bbdd
   const conn = await getConnection();
 
@@ -71,9 +68,11 @@ server.post('/api/projectCard', async (req, res) => {
     INSERT authors (author, job, photo)
       VALUES (?, ?, ?)`;
 
-      const [resultsInsertAuthor] = await conn.execute(
-        insertAuthor,
-        [req.body.author, req.body.job, req.body.photo]);
+  const [resultsInsertAuthor] = await conn.execute(insertAuthor, [
+    req.body.autor,
+    req.body.job,
+    req.body.photo,
+  ]);
 
   // 3. Recupero el id de Authors
 
@@ -84,10 +83,16 @@ server.post('/api/projectCard', async (req, res) => {
     INSERT projects (name, slogan, repo, demo, technologies, description, image, fkAuthor)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
 
-      const [resultsInsertProject] = await conn.execute(
-        insertProject,
-        [req.body.name, req.body.slogan, req.body.repo, req.body.demo, req.body.technologies, req.body.description, req.body.image, fkAuthor]
-      );
+  const [resultsInsertProject] = await conn.execute(insertProject, [
+    req.body.name,
+    req.body.slogan,
+    req.body.repo,
+    req.body.demo,
+    req.body.technologies,
+    req.body.desc,
+    req.body.image,
+    fkAuthor,
+  ]);
 
   // 5. Recupero el id de Projects
   const idProject = resultsInsertProject.insertId;
@@ -109,17 +114,14 @@ server.post('/api/projectCard', async (req, res) => {
   //error: 'Ha ocurrido un error al crear el proyecto'
   //})
   //};
-
 });
 
-
-
-server.get('/healthcheck', (req, res) => {
-  return res.json({ message: 'OK' });
+server.get("/healthcheck", (req, res) => {
+  return res.json({ message: "OK" });
 });
 
 // Mostrar el detalle de un proyecto (serv. dinámicos)
-server.get('/projectCard/:id', async (req, res) => {
+server.get("/projectCard/:id", async (req, res) => {
   // Recibo el id del proyecto en un URL param
 
   // 1. Conectar a la bbdd
@@ -138,9 +140,9 @@ server.get('/projectCard/:id', async (req, res) => {
   // 5. res.render('plantilla', resultado)
   const data = results[0];
 
-  res.render('details', data);
+  res.render("details", data);
 });
 
 //DEFINIR SERVIDORES ESTÁTICOS
-const staticServerPathWeb = '../public-react';
+const staticServerPathWeb = "../public-react";
 server.use(express.static(path.join(__dirname, staticServerPathWeb)));
