@@ -14,6 +14,7 @@ import { Route, Routes } from "react-router-dom";
 function App() {
   const initialSavedData = JSON.parse(localStorage.getItem("savedData")) || {};
   const [savedData, setSavedData] = useState(initialSavedData);
+  const [projectsList, setProjectsList] = useState([]);
 
   const [data, setData] = useState({
     name: "",
@@ -24,8 +25,8 @@ function App() {
     desc: "",
     autor: "",
     job: "",
-    photo: "", 
-    image: "", 
+    photo: "",
+    image: "",
     ...initialSavedData,
   });
 
@@ -33,12 +34,10 @@ function App() {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const response = await fetch("/projects/list");
+      const response = await fetch("http://localhost:3000/projects/list");
       const data = await response.json();
 
-      console.log(data);
-
-      setData(data.results);
+      setProjectsList(data.results);
     };
 
     fetchProjects();
@@ -89,8 +88,6 @@ function App() {
       });
   };
 
-
-
   return (
     <div>
       <Header />
@@ -110,7 +107,10 @@ function App() {
               />
             }
           />
-          <Route path="/projects" element={<ProjectsPage data={data} />} />
+          <Route
+            path="/projects"
+            element={<ProjectsPage data={data} projectsList={projectsList} />}
+          />
           <Route path="/detail" element={<DetailPage />} />
         </Routes>
       </main>
