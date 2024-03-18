@@ -128,6 +128,12 @@ server.get('/projectCard/:id', (req, res) => {
 
 });
 
+server.get('/healthcheck', (req, res) => {
+
+  return res.json({message: "OK"})
+
+});
+
 //definir EndPoint
 
 // // Crear proyectos
