@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql2/promise');
+const path = require('path');
 
 require('dotenv').config();
 
@@ -37,9 +38,6 @@ async function getConnection() {
 server.listen(port, () => {
   console.log(`Servidor iniciado escuchando en http://localhost:${port}`);
 });
-
-// SERVIDOR ESTÁTICOS
-server.use(express.static('./public'));
 
 // ENDPOINTS
 
@@ -209,4 +207,4 @@ res.render('details', data)
 
 //DEFINIR SERVIDORES ESTÁTICOS
 const staticServerPathWeb='../public-react';
-application.use(express.static(path.join(__dirname, staticServerPathWeb)));
+server.use(express.static(path.join(__dirname, staticServerPathWeb)));
