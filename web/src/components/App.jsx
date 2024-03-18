@@ -12,10 +12,6 @@ import { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 
 function App() {
-  const initialSavedData = JSON.parse(localStorage.getItem("savedData")) || {};
-  const [savedData, setSavedData] = useState(initialSavedData);
-  const [projectsList, setProjectsList] = useState([]);
-
   const [data, setData] = useState({
     name: "",
     slogan: "",
@@ -27,10 +23,9 @@ function App() {
     job: "",
     photo: "",
     image: "",
-    ...initialSavedData,
   });
 
-  const [fetchResponse, setFetchResponse] = useState();
+  const [projectsList, setProjectsList] = useState([]);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -43,36 +38,45 @@ function App() {
     fetchProjects();
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("savedData", JSON.stringify(savedData));
-  }, [savedData]);
+  const [fetchResponse, setFetchResponse] = useState();
 
-  const changeData = (fieldName, inputValue) => {
-    setData({ ...data, [fieldName]: inputValue });
-    setSavedData({ ...data, [fieldName]: inputValue });
+  const changeData = (nameProp, newValue) => {
+    const clonData = { ...data };
+
+    clonData[nameProp] = newValue;
+
+    setData(clonData);
   };
 
   const updateAvatarAuthor = (image) => {
     const clonData = { ...data };
+
     clonData.photo = image;
+
     setData(clonData);
-    setSavedData((data) => ({
-      ...data,
-      photo: image,
-    }));
   };
 
   const updateAvatarProject = (image) => {
     const clonData = { ...data };
+
     clonData.image = image;
+
     setData(clonData);
-    setSavedData((data) => ({
-      ...data,
-      image: image,
-    }));
   };
 
   const handleFetchPost = () => {
+    const data = {
+      name: "", // Nombre del proyecto
+      slogan: "", // Slogan del proyecto
+      technologies: "", // Tecnologías
+      repo: "", // Repo
+      demo: "", // Demo
+      desc: "", // Descripción
+      autor: "", // Nombre de la autora
+      job: "", // Trabajo de la autora
+      photo: "", // Foto de la autora
+      image: "", // Foto del proyecto
+    };
     fetch("/api/projectCard", {
       method: "POST",
       body: JSON.stringify(data),
@@ -81,10 +85,6 @@ function App() {
       .then((response) => response.json())
       .then((dataResponse) => {
         setFetchResponse(dataResponse);
-        if (dataResponse.success) {
-          setSavedData({});
-          localStorage.removeItem("savedData");
-        }
       });
   };
 

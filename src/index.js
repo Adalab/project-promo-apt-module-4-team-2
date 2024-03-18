@@ -10,7 +10,7 @@ require('dotenv').config();
 // CREAR VARIABLES
 const server = express();
 const port = 10000;
-const host = '0.0.0.0'
+const host = '0.0.0.0';
 
 // CONFIGURACIÓN
 server.use(cors());
@@ -23,7 +23,7 @@ async function getConnection() {
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASS,
-    database: process.env.MYSQL_DDBB
+    database: process.env.MYSQL_DDBB,
   });
 
   await connection.connect();
@@ -71,9 +71,9 @@ server.post('/api/projectCard', async (req, res) => {
     INSERT authors (author, job, photo)
       VALUES (?, ?, ?)`;
 
-  const [resultsInsertAuthor] = await conn.execute(
-    insertAuthor,
-    [req.body.author, req.body.job, req.body.photo]);
+      const [resultsInsertAuthor] = await conn.execute(
+        insertAuthor,
+        [req.body.author, req.body.job, req.body.photo]);
 
   // 3. Recupero el id de Authors
 
@@ -84,10 +84,10 @@ server.post('/api/projectCard', async (req, res) => {
     INSERT projects (name, slogan, repo, demo, technologies, description, image, fkAuthor)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
 
-  const [resultsInsertProject] = await conn.execute(
-    insertProject,
-    [req.body.name, req.body.slogan, req.body.repo, req.body.demo, req.body.technologies, req.body.description, req.body.image, fkAuthor]
-  );
+      const [resultsInsertProject] = await conn.execute(
+        insertProject,
+        [req.body.name, req.body.slogan, req.body.repo, req.body.demo, req.body.technologies, req.body.description, req.body.image, fkAuthor]
+      );
 
   // 5. Recupero el id de Projects
   const idProject = resultsInsertProject.insertId;
@@ -100,9 +100,8 @@ server.post('/api/projectCard', async (req, res) => {
   if (resultsInsertProject.affectedRows === 1) {
     res.json({
       success: true,
-      cardURL: `http://localhost:${port}/projectCard/${idProject}`
-    })
-
+      cardURL: `/projectCard/${idProject}`,
+    });
   }
   //else {
   //res.json({
@@ -111,96 +110,25 @@ server.post('/api/projectCard', async (req, res) => {
   //})
   //};
 
-  console.log (res);
-
-});
-
-// Mostrar el detalle de un proyecto (serv. dinámicos)
-server.get('/projectCard/:id', (req, res) => {
-
-  // Recibo el id del proyecto en un URL param
-
-  // 1. Conectar a la bbdd
-  // 2. Lanzar un SELECT para recuperar 1 proyecto con el id <- req.params
-  // 3. Hago un template (EJS)
-  // 4. Cierro la conexión
-  // 5. res.render('plantilla', resultado)
-
+  console.log(res);
 });
 
 server.get('/healthcheck', (req, res) => {
-
-  return res.json({message: "OK"})
-
+  return res.json({ message: 'OK' });
 });
-
-//definir EndPoint
-
-// // Crear proyectos
-// app.post('/api/projectCard', async (req, res) => {
-
-//   // Datos vienen req.body
-
-//   // 1. Conectar a la bbdd
-
-//   const conn = await getConnection();
-
-//   // 2. Insertar los datos de la autora  Authors
-//  const insertAuthor = `
-//   INSERT authors (autor, job, image)
-//     VALUES (?, ?, ?)`
-
-// const [resultsInsertAuthor] = await conn.execute(insertAuthor, [req.body.autor, req.body.job, req.body.image]); 
-
-//   // 3. Recupero el id de Authors
-
-//   const fkAuthor = resultsInsertAuthor.insertId;
-
-//   // 4. Insertar el proyecto Projects(fkAuthors)
-  
-//   const insertProject = `
-//   INSERT projects (name, slogan, repo, demo, technologies, \`desc\`, photo, fkAutor) 
-//     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-
-//     const [resultsInsertProject] = await conn.execute(
-//       insertProject,
-//       [req.body.name, req.body.sloga, req.body.repo, req.body.demo, req.body.technologies, req.body.desc, req.body.photo, fkAuthor]
-//     )
-
-
-//   // 5. Recupero el id de Projects
-
-// const idProject = resultsInsertProject.insertId
-
-//   // 6. Cierro al conexion
-
-//   conn.end();
-
-//   // 7. Devuelvo el json
-// res.json({ 
-//   success: true,
-//   cardURL: `https://localhost:${port}/projectCard/${idProject}`
-// });
-
-// });
-
-
 
 // Mostrar el detalle de un proyecto (serv. dinámicos)
 server.get('/projectCard/:id', async (req, res) => {
-
   // Recibo el id del proyecto en un URL param
 
   // 1. Conectar a la bbdd
-  const conn = await getConnection()
+  const conn = await getConnection();
   // 2. Lanzar un SELECT para recuperar 1 proyecto con el id <- req.params
   const selectProjects = `
   SELECT *
     FROM authors a 
       JOIN projects p ON (a.idAuthor= p.fkAuthor)
-    WHERE p.idProject = ?;`
-    ;
-
+    WHERE p.idProject = ?;`;
   const [results] = await conn.query(selectProjects, [req.params.id]);
 
   // 3. Hago un template (EJS)
@@ -209,8 +137,7 @@ server.get('/projectCard/:id', async (req, res) => {
   // 5. res.render('plantilla', resultado)
   const data = results[0];
 
-  res.render('details', data)
-
+  res.render('details', data);
 });
 
 //DEFINIR SERVIDORES ESTÁTICOS
