@@ -10,6 +10,7 @@ require('dotenv').config();
 // CREAR VARIABLES
 const server = express();
 const port = 3000;
+const host = '0.0.0.0'
 
 // CONFIGURACIÓN
 server.use(cors());
@@ -35,8 +36,8 @@ async function getConnection() {
 }
 
 // ARRANCAR EL SERVIDOR
-server.listen(port, () => {
-  console.log(`Servidor iniciado escuchando en http://localhost:${port}`);
+server.listen(port, host, () => {
+  console.log(`Servidor iniciado escuchando en http://${host}:${port}`);
 });
 
 // ENDPOINTS
