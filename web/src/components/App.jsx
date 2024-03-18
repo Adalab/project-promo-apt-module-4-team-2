@@ -34,7 +34,7 @@ function App() {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const response = await fetch("http://localhost:3000/projects/list");
+      const response = await fetch("/projects/list");
       const data = await response.json();
 
       setProjectsList(data.results);
@@ -73,7 +73,7 @@ function App() {
   };
 
   const handleFetchPost = () => {
-    fetch("http://localhost:3000/api/projectCard", {
+    fetch("/api/projectCard", {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
