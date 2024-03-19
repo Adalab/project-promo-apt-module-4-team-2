@@ -31,8 +31,13 @@ function App() {
     const fetchProjects = async () => {
       const response = await fetch("/projects/list");
       const data = await response.json();
+      const modifiedProjectsList = data.results.map((project) => ({
+        ...project,
+        desc: project.description, // Map description field
+        autor: project.author, // Map author field
+      }));
 
-      setProjectsList(data.results);
+      setProjectsList(modifiedProjectsList);
     };
 
     fetchProjects();
@@ -77,7 +82,7 @@ function App() {
       photo: "", // Foto de la autora
       image: "", // Foto del proyecto
     };
-    fetch("/api/projectCard", {
+    fetch("http://localhost:10000/api/projectCard", {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
