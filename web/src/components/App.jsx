@@ -70,19 +70,7 @@ function App() {
   };
 
   const handleFetchPost = () => {
-    const data = {
-      name: "", // Nombre del proyecto
-      slogan: "", // Slogan del proyecto
-      technologies: "", // Tecnologías
-      repo: "", // Repo
-      demo: "", // Demo
-      desc: "", // Descripción
-      autor: "", // Nombre de la autora
-      job: "", // Trabajo de la autora
-      photo: "", // Foto de la autora
-      image: "", // Foto del proyecto
-    };
-    fetch("http://localhost:10000/api/projectCard", {
+    fetch("/api/projectCard", {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
