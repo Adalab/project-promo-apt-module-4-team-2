@@ -4,18 +4,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" Content-Type="text/css" href="/main.css" />
   <title>Document</title>
 </head>
 
 <body>
   <section class="preview">
-    <div class="projectImage" style="background-image: url('/src/images/ebook-example.jpg')"></div>
+    <div class="projectImage" style="background-image: url('/src/public-css/images/ebook-example.jpg')"><%=image%></div>
     <article class="card">
       <h2 class="card__projectTitle">
         <span class="card__projectTitle--text">Personal project card</span>
       </h2>
       <div class="card__author">
-        <div class="card__authorPhoto" style="background-image: url('/src/images/avatar.webp')"></div>
+        <div class="card__authorPhoto" style="background-image: url('/src/public-css/images/avatar.webp')"><%=photo%></div>
         <p class="card__job">
           <%=job%>
         </p>

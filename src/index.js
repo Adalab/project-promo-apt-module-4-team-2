@@ -146,3 +146,7 @@ server.get("/projectCard/:id", async (req, res) => {
 //DEFINIR SERVIDORES ESTÁTICOS
 const staticServerPathWeb = "../public-react";
 server.use(express.static(path.join(__dirname, staticServerPathWeb)));
+
+//DEFINIR SERVIDORES ESTÁTICOS
+const pathServerPublicStyles = './src/public-css';
+server.use(express.static(pathServerPublicStyles));
