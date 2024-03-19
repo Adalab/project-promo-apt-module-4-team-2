@@ -10,13 +10,13 @@
 
 <body>
   <section class="preview">
-    <div class="projectImage" style="background-image: url('/src/public-css/images/ebook-example.jpg')"><%=image%></div>
+    <div class="projectImage" style="background-image: url('<%= image ? image : '/images/ebook-example.jpg' %>')"></div>
     <article class="card">
       <h2 class="card__projectTitle">
         <span class="card__projectTitle--text">Personal project card</span>
       </h2>
       <div class="card__author">
-        <div class="card__authorPhoto" style="background-image: url('/src/public-css/images/avatar.webp')"><%=photo%></div>
+        <div class="card__authorPhoto" style="background-image: url('<%= photo ? photo : '/images/avatar.webp' %>')"></div>
         <p class="card__job">
           <%=job%>
         </p>
